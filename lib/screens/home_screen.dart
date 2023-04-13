@@ -45,6 +45,14 @@ class HomePage extends StatelessWidget {
                 children: [Text("SMA"),Text("234667126")
                 ],
               ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailPage(),
+                  ),
+                );
+              },
             ),
             Divider( // Memberikan Garis
               color: Colors.black, // Warna pada garis
