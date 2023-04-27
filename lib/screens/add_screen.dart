@@ -73,6 +73,7 @@ class _FormPageState extends State<FormPage> {
                     },
                     decoration: InputDecoration(
                         hintText: 'Nama Depan',
+                        labelText: "Nama Depan",
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5)
                         )
@@ -92,6 +93,7 @@ class _FormPageState extends State<FormPage> {
                     },
                     decoration: InputDecoration(
                         hintText: 'Nama Belakang',
+                        labelText: "Nama Belakang",
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5)
                         )
@@ -103,15 +105,17 @@ class _FormPageState extends State<FormPage> {
             SizedBox(height: 10),
             TextFormField(
               controller: mobilePhoneController,
+              maxLength: 12,
               validator: (value){
                 if(value.isEmpty){
-                  return "Tidak Boleh Kosong";
+                  return "Maksimal 12 Angka, Tidak Boleh Kosong";
                 }else{
                   return null;
                 }
               },
               decoration: InputDecoration(
                   hintText: 'No. Hp',
+                  labelText: "No. Hp",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5)
                   )
@@ -170,7 +174,6 @@ class _FormPageState extends State<FormPage> {
                   .toList(),
             ),
             SizedBox(height: 10),
-            Text('Alamat', style: TextStyle(color: Colors.blue)),
             SizedBox(
               height: 8,
             ),
@@ -186,6 +189,7 @@ class _FormPageState extends State<FormPage> {
               maxLines: 5,
               decoration: InputDecoration(
                   hintText:  "Alamat",
+                  labelText: "Alamat",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5))
               ),
