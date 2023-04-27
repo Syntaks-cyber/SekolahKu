@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sekolahku/screens/detail_screen.dart';
 
+
 class AddPage extends StatefulWidget {
+
+  const AddPage({Key key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState(){
     return CheckState();
@@ -9,9 +13,23 @@ class AddPage extends StatefulWidget {
 }
 
 class CheckState extends State<AddPage> {
+  final _namadepanController  = TextEditingController();
+  final _namabelakangController  = TextEditingController();
+  final _alamatController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _nameFocus = FocusNode();
+  bool _userEdited = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
+
+
   TextEditingController textarea = TextEditingController();
   int _valueb=0;
-  String? _value;
+  String _value;
   final allChecked = CheckBoxHobi(title: 'Semua');
   final checkBoxList = [
     CheckBoxHobi(title: 'Membaca'),
@@ -30,8 +48,8 @@ class CheckState extends State<AddPage> {
       home: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(
-            context,MaterialPageRoute(
+           Navigator.push(
+           context,MaterialPageRoute(
                 builder: (context) => DetailPage(),
             ),
             );
@@ -51,53 +69,74 @@ class CheckState extends State<AddPage> {
           //Warna background App Bar
         ),
         body: SingleChildScrollView(
-        child: Column (
+          child: Column (
           crossAxisAlignment: CrossAxisAlignment.start,
           children:[
             SizedBox(
               height: 8,
             ),
-            Row(
+          Row(
             children: [
               Expanded(
-                child: ListTile(
-                  subtitle: TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8))),
+              child:Container(
+              margin: EdgeInsets.only(top: 5,left: 15,right:8),
+                child: TextFormField(
+                  controller: _namadepanController,
+                  decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
                       hintText: 'Nama Depan',
                     ),
-                  ),),
+                  onChanged: (text) {
+                    _userEdited = true;
+                    setState(() {
+                    });
+                  },
+                  ),
+              ),
               ),
               Expanded(
-                child:ListTile(
-                  subtitle:  TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8))),
+                child:Container(
+                  margin: EdgeInsets.only(top: 5,right: 15),
+                child: TextFormField(
+                    controller: _namabelakangController,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
                       hintText: 'Nama Belakang',
                     ),
-                  ),),
+                    onChanged: (text) {
+                    _userEdited = true;
+                    setState(() {
+                    });
+                  },
+                  ),
+              ),
               ),
             ],
           ),
             SizedBox(
-              height: 8,
+              height: 10,
             ),
             ListTile(
             subtitle: TextFormField(
-              decoration: const InputDecoration(
-              border: OutlineInputBorder(
+              controller: _phoneController,
+              decoration: InputDecoration(
+              border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(8))),
               hintText: 'No. Hp',
               ),
+              onChanged: (text) {
+                _userEdited = true;
+              },
+              keyboardType: TextInputType.phone,
             ),
           ),
             SizedBox(
               height: 8,
             ),
           Container(
-            padding: EdgeInsets.only(left: 19),
+            padding: EdgeInsets.only(left: 18),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -116,7 +155,7 @@ class CheckState extends State<AddPage> {
                   activeColor: Color(0xffff9100),
                   onChanged: (value) {
                     setState((){
-                      _valueb=value!;
+                      _valueb=value;
                     }
                     );
                   }),
@@ -131,7 +170,7 @@ class CheckState extends State<AddPage> {
                     activeColor: Color(0xffff9100),
                     onChanged: (value) {
                       setState((){
-                        _valueb=value!;
+                        _valueb=value;
                       });
                     }),
               ),
@@ -141,7 +180,7 @@ class CheckState extends State<AddPage> {
           ],
            ),),
           Container(
-          padding: EdgeInsets.only(left: 19),
+          padding: EdgeInsets.only(left: 18, right: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -182,7 +221,7 @@ class CheckState extends State<AddPage> {
               height: 20,
             ),
             Container(
-              padding: EdgeInsets.only(left: 19),
+              padding: EdgeInsets.only(left: 18),
               child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -219,7 +258,7 @@ class CheckState extends State<AddPage> {
               height: 8,
             ),
           Container(
-          padding: EdgeInsets.only(left: 17),
+          padding: EdgeInsets.only(left: 18, right: 15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -229,17 +268,23 @@ class CheckState extends State<AddPage> {
               SizedBox(
                 height: 8,
               ),
-            TextField(
+              TextFormField(
               //controller: textarea,
               keyboardType: TextInputType.multiline,
               maxLines: 4,
+              controller: _alamatController,
               decoration: InputDecoration(
                   hintText: "Alamat",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8))),
-                  )
+                  ),
+                onChanged: (text) {
+                  _userEdited = true;
+                  setState(() {
+                  });
+                },
               ),
-          ],
+            ],
         ),
       ),
     ],),
@@ -269,7 +314,7 @@ class CheckBoxHobi {
   String title;
   bool value;
 
-  CheckBoxHobi({required this.title, this.value=false});
+  CheckBoxHobi({this.title, this.value=false});
 }
 
 

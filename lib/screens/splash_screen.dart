@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatefulWidget {
-  const SplashPage({ Key? key }) : super(key: key);
+  const SplashPage({ Key key }) : super(key: key);
 
   @override
   State<SplashPage> createState() => _SplashPageState();

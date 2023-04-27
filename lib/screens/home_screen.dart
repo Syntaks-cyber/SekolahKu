@@ -2,7 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:sekolahku/screens/add_screen.dart';
 import 'package:sekolahku/screens/detail_screen.dart';
 
-class HomePage extends StatelessWidget {
+enum OrderOptions { orderaz, orderza }
+
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,7 +30,8 @@ class HomePage extends StatelessWidget {
           onPressed: () {
             Navigator.push(context,
             MaterialPageRoute(builder: (context) => AddPage(),
-            ),);
+            ),
+            );
           },
           child: Icon(Icons.add, size: 30),
           backgroundColor: Colors.orangeAccent,
@@ -26,6 +41,19 @@ class HomePage extends StatelessWidget {
           backgroundColor: Colors.indigo.shade900,
           actions: <Widget>[
             IconButton(icon: new Icon(Icons.search, color: Colors.white), onPressed: () {  },),
+            PopupMenuButton<OrderOptions>(
+              itemBuilder: (context) => <PopupMenuEntry<OrderOptions>>[
+                const PopupMenuItem<OrderOptions>(
+                  child: Text('Ordenar de A-Z'),
+                  value: OrderOptions.orderaz,
+                ),
+                const PopupMenuItem<OrderOptions>(
+                  child: Text('Ordenar de Z-A'),
+                  value: OrderOptions.orderza,
+                ),
+              ],
+              //onSelected: _orderList,
+            ),
           ],//Warna background App Bar
         ),
         body: ListView( //Widget ListView

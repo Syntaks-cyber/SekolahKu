@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sekolahku/screens/add_screen.dart';
+import 'package:sekolahku/screens/edit_screen.dart';
 import 'package:sekolahku/screens/home_screen.dart';
 
 class DetailPage extends StatefulWidget {
@@ -32,7 +32,7 @@ class CheckState extends State<DetailPage> {
             actions: <Widget>[
               IconButton(icon: new Icon(Icons.edit, color: Colors.white), onPressed: () {
                 Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AddPage(),
+                  MaterialPageRoute(builder: (context) => EditPage(),
                   ),);
               },),
               IconButton(icon: new Icon(Icons.delete, color: Colors.white), onPressed: () {  },),
