@@ -1,321 +1,234 @@
 import 'package:flutter/material.dart';
-import 'package:sekolahku/screens/detail_screen.dart';
+import 'package:sekolahku/custom/CheckB.dart';
+import 'package:sekolahku/custom/Cradio.dart';
+import 'package:sekolahku/domain/student_domain.dart';
+import 'package:sekolahku/services/app_services.dart';
+import 'package:sekolahku/utils/capitalize.dart';
 
+class FormPage extends StatefulWidget {
+  final String title;
+  final bool isEdit;
+  final StudentDomain studentDomain;
 
-class AddPage extends StatefulWidget {
-
-  const AddPage({Key key}) : super(key: key);
+  const FormPage({Key key, @required this.title, this.isEdit, this.studentDomain}) : super(key : key);
 
   @override
-  State<StatefulWidget> createState(){
-    return CheckState();
-  }
+  _FormPageState createState() => _FormPageState();
 }
 
-class CheckState extends State<AddPage> {
-  final _namadepanController  = TextEditingController();
-  final _namabelakangController  = TextEditingController();
-  final _alamatController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _nameFocus = FocusNode();
-  bool _userEdited = false;
+class _FormPageState extends State<FormPage> {
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController mobilePhoneController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  String gender;
+  String grade;
+  List<String> valueHobbies = <String>[];
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
-
+    if(widget.isEdit){
+      firstNameController.text = widget.studentDomain.firstName;
+      lastNameController.text = widget.studentDomain.lastName;
+      mobilePhoneController.text = widget.studentDomain.mobilePhone;
+      addressController.text = widget.studentDomain.address;
+      gender = widget.studentDomain.gender;
+      grade = widget.studentDomain.grade;
+      valueHobbies = widget.studentDomain.hobbies;
+    }
   }
-
-
-  TextEditingController textarea = TextEditingController();
-  int _valueb=0;
-  String _value;
-  final allChecked = CheckBoxHobi(title: 'Semua');
-  final checkBoxList = [
-    CheckBoxHobi(title: 'Membaca'),
-    CheckBoxHobi(title: 'Menulis'),
-    CheckBoxHobi(title: 'Menggambar')
-  ];
-
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false, //untuk menghilangkan showdebug
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-           Navigator.push(
-           context,MaterialPageRoute(
-                builder: (context) => DetailPage(),
-            ),
-            );
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.indigo.shade900,
+        title: Text('Buat Siswa'),
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pop(context);
           },
-          child: Icon(Icons.save, size: 30),
-          backgroundColor: Colors.orangeAccent,
+          icon: Icon(Icons.arrow_back),
         ),
-        appBar: AppBar(
-          title: Text("Buat Siswa"),
-          leading: IconButton(
-            onPressed: (){
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back),
-          ),
-          backgroundColor: Colors.indigo.shade900,
-          //Warna background App Bar
-        ),
-        body: SingleChildScrollView(
-          child: Column (
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children:[
-            SizedBox(
-              height: 8,
-            ),
-          Row(
-            children: [
-              Expanded(
-              child:Container(
-              margin: EdgeInsets.only(top: 5,left: 15,right:8),
-                child: TextFormField(
-                  controller: _namadepanController,
-                  decoration: InputDecoration(
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8))),
-                      hintText: 'Nama Depan',
-                    ),
-                  onChanged: (text) {
-                    _userEdited = true;
-                    setState(() {
-                    });
-                  },
-                  ),
-              ),
-              ),
-              Expanded(
-                child:Container(
-                  margin: EdgeInsets.only(top: 5,right: 15),
-                child: TextFormField(
-                    controller: _namabelakangController,
+      ),
+      body: Form(
+        key: _formkey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        child: ListView(
+          padding: EdgeInsets.all(10),
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: firstNameController,
+                    validator: (value){
+                      if(value.isEmpty){
+                        return "Tidak Boleh Kosong";
+                      }else{
+                        return null;
+                      }
+                    },
                     decoration: InputDecoration(
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8))),
-                      hintText: 'Nama Belakang',
+                        hintText: 'Nama Depan',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5)
+                        )
                     ),
-                    onChanged: (text) {
-                    _userEdited = true;
-                    setState(() {
-                    });
-                  },
                   ),
-              ),
-              ),
-            ],
-          ),
-            SizedBox(
-              height: 10,
+                ),
+                SizedBox(width: 8),
+                Expanded(
+                  child: TextFormField(
+                    controller: lastNameController,
+                    validator: (value){
+                      if(value.isEmpty){
+                        return "Tidak Boleh Kosong";
+                      }else{
+                        return null;
+                      }
+                    },
+                    decoration: InputDecoration(
+                        hintText: 'Nama Belakang',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5)
+                        )
+                    ),
+                  ),
+                )
+              ],
             ),
-            ListTile(
-            subtitle: TextFormField(
-              controller: _phoneController,
-              decoration: InputDecoration(
-              border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(8))),
-              hintText: 'No. Hp',
-              ),
-              onChanged: (text) {
-                _userEdited = true;
+            SizedBox(height: 10),
+            TextFormField(
+              controller: mobilePhoneController,
+              validator: (value){
+                if(value.isEmpty){
+                  return "Tidak Boleh Kosong";
+                }else{
+                  return null;
+                }
               },
+              decoration: InputDecoration(
+                  hintText: 'No. Hp',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5)
+                  )
+              ),
               keyboardType: TextInputType.phone,
             ),
-          ),
-            SizedBox(
-              height: 8,
+            SizedBox(height: 10),
+            Text(
+              'Jenis Kelamin',
+              style: TextStyle(color: Colors.blue),
             ),
-          Container(
-            padding: EdgeInsets.only(left: 18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Jenis Kelamin",
-          style: TextStyle(
-              color: Color(0xffff9100),
-              fontSize: 17),),
-           Row(
-          children: [
-            Expanded(
-            child:ListTile(
-              title: const Text('Pria'),
-              leading: Radio(
-                  value: 1,
-                  groupValue: _valueb,
-                  activeColor: Color(0xffff9100),
-                  onChanged: (value) {
-                    setState((){
-                      _valueb=value;
-                    }
-                    );
-                  }),
-            ),
-            ),
-            Expanded(
-              child:ListTile(
-                title: const Text('Wanita'),
-                leading: Radio(
-                    value: 2,
-                    groupValue: _valueb,
-                    activeColor: Color(0xffff9100),
-                    onChanged: (value) {
-                      setState((){
-                        _valueb=value;
-                      });
-                    }),
-              ),
-            ),
-          ],
-            ),
-          ],
-           ),),
-          Container(
-          padding: EdgeInsets.only(left: 18, right: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-            DropdownButtonFormField(
-            iconSize: 20,
-            style: TextStyle(color: Colors.black, fontSize: 17),
-            onChanged: (s) {},
-            hint: Text('Pilih Jenjang'),
-                items: [
-                  DropdownMenuItem<String>(
-                    child: Text('SD'),
-                    value: 'one',
-                  ),
-                  DropdownMenuItem<String>(
-                    child: Text('SMP'),
-                    value: 'two',
-                  ),
-                  DropdownMenuItem<String>(
-                    child: Text('SMA'),
-                    value: 'three',
-                  ),
-                  DropdownMenuItem<String>(
-                    child: Text('S1'),
-                    value: 'four',
-                  ),
-                ],
-             //   onChanged: (String? value) {
-               //   setState(() {
-                //    _value = value;
-                //  });
-               // },
-              //  hint: Text('Pilih Jenjang'),
-                //value: _value,
-              ),],
-           ),
-          ),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 18),
-              child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-              Text('Hobi',
-              style: TextStyle(
-                  color: Color(0xffff9100),fontSize: 17),),
-              ListTile(
-              onTap: () => onAllClicked(allChecked),
-              leading: Checkbox(
-              value: allChecked.value,
-              onChanged: (value) => onAllClicked(allChecked),
-              ),
-                title: Text(allChecked.title, style: TextStyle(
-              fontSize: 15
-                )),
-              ),
-              Divider(),
-              ...checkBoxList.map((item) =>
-                  ListTile(
-                    onTap: () => onItemClicked(item),
-                    leading: Checkbox(
-                    value: item.value,
-                      activeColor: Colors.orangeAccent,
-                    onChanged: (value) => onItemClicked(item),
-                  ),
-                title: Text(item.title, style: TextStyle(
-                    fontSize: 15
-                )),
-              )
-            ).toList()
-            ],),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-          Container(
-          padding: EdgeInsets.only(left: 18, right: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Alamat',
-                style: TextStyle(
-                    color: Color(0xffff9100), fontSize: 17),),
-              SizedBox(
-                height: 8,
-              ),
-              TextFormField(
-              //controller: textarea,
-              keyboardType: TextInputType.multiline,
-              maxLines: 4,
-              controller: _alamatController,
-              decoration: InputDecoration(
-                  hintText: "Alamat",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8))),
-                  ),
-                onChanged: (text) {
-                  _userEdited = true;
+            Row(
+              children: StudentDomain.genders.map((e) => CustomRadio(
+                value: e,
+                groupValue: gender,
+                label: capitalize(e),
+                onChanged: (value) {
                   setState(() {
+                    gender = value;
                   });
                 },
+                activeColor: Colors.orangeAccent,
+              ))
+                  .toList(),
+            ),
+            SizedBox(height: 10),
+            DropdownButton<String>(
+              items: StudentDomain.grades.map((e) => DropdownMenuItem(child: Text(e), value: e))
+                  .toList(),
+              value: grade,
+              onChanged: (value){
+                setState(() {
+                  grade = value;
+                });
+              },
+              isExpanded: true,
+              hint: Text("Pilih Jenjang"),
+            ),
+            SizedBox(height: 10),
+            Text('Hobi', style: TextStyle(color: Colors.blue)),
+            Column(
+              children: StudentDomain.hobbyList.map((e) => CustomCheckBox(
+                text: e,
+                value: valueHobbies.contains(e),
+                onChanged: (value){
+                  setState(() {
+                    if(valueHobbies.contains(e)){
+                      valueHobbies.remove(e);
+                    }else{
+                      valueHobbies.add(e);
+                    }
+                  });
+                },
+                activeColor: Colors.orangeAccent,
+              ))
+                  .toList(),
+            ),
+            SizedBox(height: 10),
+            Text('Alamat', style: TextStyle(color: Colors.blue)),
+            SizedBox(
+              height: 8,
+            ),
+            TextFormField(
+              controller: addressController,
+              validator: (value){
+                if(value.isEmpty){
+                  return "Tidak Boleh Kosong";
+                } else {
+                  return null;
+                }
+              },
+              maxLines: 5,
+              decoration: InputDecoration(
+                  hintText:  "Alamat",
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5))
               ),
-            ],
+            ),
+          ],
         ),
       ),
-    ],),
-    ),
-    ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          if(_formkey.currentState.validate()){
+            StudentDomain studentDomain = StudentDomain();
+            studentDomain.address = addressController.text.trim();
+            studentDomain.hobbies = valueHobbies;
+            studentDomain.grade = grade;
+            studentDomain.gender = gender;
+            studentDomain.hobbies = valueHobbies;
+            studentDomain.mobilePhone = mobilePhoneController.text.trim();
+            studentDomain.lastName = lastNameController.text.trim();
+            studentDomain.firstName = firstNameController.text.trim();
+
+            if(widget.isEdit){
+              AppServices.getPelajarService.updateStudent(widget.studentDomain.idStudent, studentDomain)
+                  .then((value){
+                Navigator.pop(context);
+              }).catchError((error){
+              });
+            }else{
+              AppServices.getPelajarService.createStudents(studentDomain).then((value) {
+                Navigator.pop(context);
+              }).catchError((error){
+                print(error);
+              });
+            }
+          }else{
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Silahkan Isi")));
+          }
+        },
+        child: Icon(
+          Icons.save,
+          color: Colors.white,
+        ),
+        backgroundColor: Colors.orangeAccent,
+      ),
     );
   }
-
-  onAllClicked(CheckBoxHobi ckbItem){
-    final newValue = !ckbItem.value;
-    setState(() {
-      ckbItem.value = newValue;
-      checkBoxList.forEach((element){
-        element.value = newValue;
-      });
-    });
-  }
-
-  onItemClicked(CheckBoxHobi ckbItem){
-    setState(() {
-      ckbItem.value = !ckbItem.value;
-    });
-  }
 }
-
-class CheckBoxHobi {
-  String title;
-  bool value;
-
-  CheckBoxHobi({this.title, this.value=false});
-}
-
-
-

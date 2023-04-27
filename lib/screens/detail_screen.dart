@@ -1,99 +1,121 @@
-import 'package:flutter/material.dart';
-import 'package:sekolahku/screens/edit_screen.dart';
-import 'package:sekolahku/screens/home_screen.dart';
 
-class DetailPage extends StatefulWidget {
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:sekolahku/domain/student_domain.dart';
+import 'package:sekolahku/screens/add_screen.dart';
+import 'package:sekolahku/services/app_services.dart';
+
+class DetailPage extends StatefulWidget{
+  final int id;
+  const DetailPage({Key key, this.id}) : super(key: key);
+
   @override
-  State<StatefulWidget> createState(){
-    return CheckState();
-  }
+  _DetailPageState createState() => _DetailPageState();
+
 }
 
-class CheckState extends State<DetailPage> {
+class _DetailPageState extends State<DetailPage>{
+  StudentDomain _studentDomain;
+
+  @override
+  void initState(){
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false, //untuk menghilangkan showdebug
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("Detail Siswa"),
-          leading: IconButton(
-            onPressed: () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (context) => HomePage(),
-                ),);
-            },
-            icon: Icon(Icons.arrow_back),
-          ),
-          backgroundColor: Colors.indigo.shade900,
-            actions: <Widget>[
-              IconButton(icon: new Icon(Icons.edit, color: Colors.white), onPressed: () {
-                Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => EditPage(),
-                  ),);
-              },),
-              IconButton(icon: new Icon(Icons.delete, color: Colors.white), onPressed: () {  },),
-            ],
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.indigo.shade900,
+        title: Text('Detail Siswa'),
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back),
         ),
-        body: ListView(
-            children: <Widget>[
-              SizedBox(
-                height: 20,
+        actions: [
+          IconButton(
+            onPressed: (){
+              Navigator.push(
+                context, MaterialPageRoute(
+                builder: (context) => FormPage(
+                  title: 'Edit Siswa',
+                  isEdit: true,
+                  studentDomain: _studentDomain,
+                ),
               ),
-              imageProfile(),
-            ListTile(
-            leading: Icon(Icons.contacts),
-            title: Text("Jhon Wick"),
-            subtitle: Text("Nama"),
-            ),
-            ListTile(
-            leading: Icon(Icons.phone),
-            title: Text("91236778"),
-            subtitle: Text("No. Hp"),
-            ),
-            ListTile(
-            leading: Icon(Icons.label),
-            title: Text("Pria"),
-            subtitle: Text("Jenis Kelamin"),
-            ),
-            ListTile(
-            leading: Icon(Icons.school),
-            title: Text("SMA"),
-            subtitle: Text("Jenjang"),
-            ),
-            ListTile(
-            leading: Icon(Icons.location_on),
-            title: Text("Hollywood"),
-            subtitle: Text("Alamat"),
+              ).then((value) {
+                setState(() {});
+              });
+            },
+            icon: Icon(Icons.create),
           ),
-      ],
-    ),
-    ),
+          IconButton(
+            onPressed:(){
+              AppServices.getPelajarService.deleteStudent(widget.id).then((value) {
+                Navigator.pop(context);
+              });
+            },
+            icon: Icon(Icons.delete),
+          )
+        ],
+      ),
+      body: FutureBuilder(
+        future: AppServices.getPelajarService.studentById(widget.id),
+        builder: (context, snapshot){
+          if(snapshot.connectionState == ConnectionState.none && snapshot.hasData == null){
+            return CircularProgressIndicator();
+          }
+
+          _studentDomain = snapshot.data;
+
+          return ListView(
+            children: [
+              SizedBox(height: 20),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(
+                      _studentDomain.gender == 'Pria'
+                          ? "assets/pria.png"
+                          : "assets/wanita.png",
+                      height: 150,
+                      width: 150
+                  ),
+                ],
+              ),
+              ListTile(
+                leading: Icon(Icons.perm_contact_cal),
+                title: Text(_studentDomain.fullName),
+                subtitle: Text("Nama"),
+              ),
+              ListTile(
+                leading: Icon(Icons.phone),
+                title: Text(_studentDomain.mobilePhone),
+                subtitle: Text("No. Hp"),
+              ),
+              ListTile(
+                leading: Icon(Icons.label),
+                title: Text(_studentDomain.gender),
+                subtitle: Text("Jenis Kelamin"),
+              ),
+              ListTile(
+                leading: Icon(Icons.school),
+                title: Text(_studentDomain.grade),
+                subtitle: Text("Jenjang"),
+              ),
+              ListTile(
+                leading: Icon(Icons.location_on),
+                title: Text(_studentDomain.address),
+                subtitle: Text("Alamat"),
+              )
+            ],
+          );
+        },
+      ),
     );
   }
 }
-
-Widget imageProfile() {
-  return Center(
-    child: Stack(children: <Widget>[
-      CircleAvatar(
-        radius: 80.0,
-        backgroundImage: AssetImage("assets/pria.png"),
-      ),
-      Positioned(
-        bottom: 10.0,
-        right: 20.0,
-        child: Icon(
-          Icons.camera_alt,
-          color: Colors.teal,
-          size: 28.0,
-        )
-      ),
-    ],
-  ),
-  );
-}
-

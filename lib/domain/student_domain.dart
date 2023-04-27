@@ -15,8 +15,8 @@ class StudentDomain {
   }
 
   static const genders = ["Pria", "Wanita"];
-  static const grades = ["TK", "SD", "SMP", "SMA", "SMK"];
-  static const hobbyList = ["membaca", "menulis"];
+  static const grades = ["TK", "SD", "SMP", "SMA", "SMK", "D3", "S1"];
+  static const hobbyList = ["Membaca", "Menulis", "Menggambar"];
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{

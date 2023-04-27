@@ -13,7 +13,7 @@ class StudentModelProvider {
         _studentModelProvider is StudentModelProvider) {
       return _studentModelProvider;
     }
-    _studentModelProvider = StudentModelProvider('sekolahku.db', 1);
+    _studentModelProvider = StudentModelProvider('db_sekolahku.db', 1);
 
     return _studentModelProvider;
   }
