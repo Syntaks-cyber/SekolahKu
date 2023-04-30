@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:sekolahku/screens/login_screen.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({ Key key }) : super(key: key);
@@ -12,8 +13,8 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   void initState() {
-    Timer(Duration(seconds: 3), () => Navigator.pushNamedAndRemoveUntil(context, "/sign-in",
-            (route) => false));
+    Timer(Duration(seconds: 3), () =>  Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (BuildContext context) => LoginPage())));
     super.initState();
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sekolahku/domain/student_domain.dart';
 import 'package:sekolahku/screens/add_screen.dart';
+import 'package:sekolahku/screens/edit_screen.dart';
 import 'package:sekolahku/services/app_services.dart';
 
 class DetailPage extends StatefulWidget{
@@ -40,8 +41,7 @@ class _DetailPageState extends State<DetailPage>{
             onPressed: (){
               Navigator.push(
                 context, MaterialPageRoute(
-                builder: (context) => FormPage(
-                  title: 'Edit Siswa',
+                builder: (context) => EditPage(
                   isEdit: true,
                   studentDomain: _studentDomain,
                 ),

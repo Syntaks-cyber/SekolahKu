@@ -5,17 +5,17 @@ import 'package:sekolahku/domain/student_domain.dart';
 import 'package:sekolahku/services/app_services.dart';
 import 'package:sekolahku/utils/capitalize.dart';
 
-class FormPage extends StatefulWidget {
+class EditPage extends StatefulWidget {
   final bool isEdit;
   final StudentDomain studentDomain;
 
-  const FormPage({Key key, @required this.isEdit, this.studentDomain}) : super(key : key);
+  const EditPage({Key key, @required this.isEdit, this.studentDomain}) : super(key : key);
 
   @override
-  _FormPageState createState() => _FormPageState();
+  _EditPageState createState() => _EditPageState();
 }
 
-class _FormPageState extends State<FormPage> {
+class _EditPageState extends State<EditPage> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -43,7 +43,7 @@ class _FormPageState extends State<FormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Buat Siswa'),
+        title: Text('Edit Siswa'),
         backgroundColor: Colors.indigo.shade900,
         leading: IconButton(
           onPressed: (){

@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primaryColor: Colors.indigo.shade900),
       home: isDatabaseReady
-          ? HomePage()
+          ? SplashPage()
           : Scaffold(
           body: Center(
             child: CircularProgressIndicator(),

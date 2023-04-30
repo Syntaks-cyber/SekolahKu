@@ -17,6 +17,11 @@ class AppServices {
     return pelajarService;
   }
 
+  static LoginService get getLoginService {
+    return loginService;
+  }
+
+
   static Future<Database> openDb() {
     return StudentModelProvider.getInstance().openDb();
   }

@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => FormPage(title: 'Buat Siswa', isEdit: false),
+              builder: (context) => FormPage(isEdit: false),
             ),
           ).then((value) {
             setState(() {
